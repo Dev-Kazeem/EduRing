@@ -1,0 +1,49 @@
+{% extends "base.html" %}
+{% block title %}Results — {{ exam.title }}{% endblock %}
+{% block content %}
+<div class="container">
+<h3 class="text-light">Results: {{ exam.title }}</h3>
+<p class="btn btn-primary text-light">{{ exam.total_marks }} total marks &middot; Pass mark: {{ exam.pass_percentage }}%</p>
+
+{% if attempts %}
+<div class="table-responsive stat-box">
+    <table class="table table-hover align-middle">
+        <thead>
+            <tr>
+                <th>Student</th>
+                <th>Attempt #</th>
+                <th>Score</th>
+                <th>Percentage</th>
+                <th>Result</th>
+                <th>Submitted</th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for attempt in attempts %}
+            <tr>
+                <td style="text-align: left;">{{ attempt.student.get_full_name|default:attempt.student.username }}</td>
+                <td>{{ attempt.attempt_number }}</td>
+                <td>{{ attempt.score }} / {{ exam.total_marks }}</td>
+                <td>{{ attempt.percentage }}%</td>
+                <td>
+                    {% if attempt.passed %}
+                        <span class="badge bg-success">Pass</span>
+                    {% else %}
+                        <span class="badge bg-danger">Fail</span>
+                    {% endif %}
+                </td>
+                <td><small>{{ attempt.submitted_at|date:"M d, Y H:i" }}</small></td>
+                <td><a href="{% url 'exams:attempt_review_teacher' attempt.id %}" class="btn btn-sm btn-outline-primary">Review</a></td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% else %}
+<div class="alert alert-info">No students have completed this exam yet.</div>
+{% endif %}
+
+<a href="{% url 'exams:teacher_dashboard' %}" class="btn btn-outline-primary mt-3">&larr; Back to My Exams</a>
+</div>
+{% endblock %}

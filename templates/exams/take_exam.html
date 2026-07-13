@@ -1,0 +1,71 @@
+{% extends "base.html" %}
+{% load exam_extras %}
+{% block title %}{{ exam.title }} — In Progress{% endblock %}
+{% block content %}
+<div class="container">
+<div class="d-flex justify-content-between align-items-center mb-3 sticky-top bg-white py-2 px-3 border-bottom stat-box">
+    <h4 class="mb-0">{{ exam.title }}</h4>
+    <div class="fs-4 fw-bold" id="timer">--:--</div>
+</div>
+
+<div class="alert alert-secondary">
+    Answer all questions, then click <strong>Submit Exam</strong>. The exam will auto-submit when time runs out.
+</div>
+
+<form method="post" id="examForm">
+    {% csrf_token %}
+    {% for question in questions %}
+    <div class="card mb-3 px-3">
+        <div class="card-body">
+            <p class="fw-bold">Q{{ forloop.counter }}. {{ question.text }} <span class="text-muted small">({{ question.marks }} mark{{ question.marks|pluralize }})</span></p>
+            {% for choice in question.choices.all %}
+            <div class="form-check p-2 ">
+                <input class="form-check-input" type="radio"
+                       name="question_{{ question.id }}"
+                       id="choice_{{ choice.id }}"
+                       value="{{ choice.id }}"
+                       {% if existing_answers|get_item:question.id == choice.id %}checked{% endif %}>
+                <label class="form-check-label" for="choice_{{ choice.id }}">{{ choice.text }}</label>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+    {% endfor %}
+    <button type="submit" class="btn btn-primary btn-lg" id="submitBtn">Submit Exam</button>
+</form>
+
+{% endblock %}
+
+{% block extra_scripts %}
+<script>
+    let secondsRemaining = {{ seconds_remaining }};
+    const timerEl = document.getElementById('timer');
+    const form = document.getElementById('examForm');
+    let submitted = false;
+
+    function formatTime(s) {
+        const m = Math.floor(s / 60).toString().padStart(2, '0');
+        const sec = (s % 60).toString().padStart(2, '0');
+        return `${m}:${sec}`;
+    }
+
+    function tick() {
+        if (submitted) return;
+        timerEl.textContent = formatTime(secondsRemaining);
+        if (secondsRemaining <= 60) {
+            timerEl.classList.add('text-danger');
+        }
+        if (secondsRemaining <= 0) {
+            submitted = true;
+            form.submit();
+            return;
+        }
+        secondsRemaining -= 1;
+        setTimeout(tick, 1000);
+    }
+    tick();
+
+    form.addEventListener('submit', () => { submitted = true; });
+</script>
+</div>
+{% endblock %}

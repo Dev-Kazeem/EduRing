@@ -1,0 +1,66 @@
+{% extends "base.html" %}
+{% block title %}Exam Review{% endblock %}
+{% block content %}
+<div class="container">
+<div class="card shadow-sm mb-4">
+    <div class="card-body">
+        <h3>{{ attempt.exam.title }}</h3>
+        {% if is_teacher_view %}
+            <p class="text-muted mb-2">Student: {{ attempt.student.get_full_name|default:attempt.student.username }}</p>
+        {% endif %}
+        <div class="row text-center mt-3">
+            <div class="col-4">
+                <h4>{{ attempt.score }} / {{ attempt.exam.total_marks }}</h4>
+                <small class="text-muted">Score</small>
+            </div>
+            <div class="col-4">
+                <h4>{{ attempt.percentage }}%</h4>
+                <small class="text-muted">Percentage</small>
+            </div>
+            <div class="col-4">
+                {% if attempt.passed %}
+                    <h4><span class="badge bg-success">PASS</span></h4>
+                {% else %}
+                    <h4><span class="badge bg-danger">FAIL</span></h4>
+                {% endif %}
+                <small class="text-muted">Result (pass mark {{ attempt.exam.pass_percentage }}%)</small>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% for answer in answers %}
+<h3 class="text-light">Answer Breakdown</h3>
+
+<div class="card mb-2 {% if answer.is_correct %}border-success{% else %}border-danger{% endif %}">
+    <div class="card-body">
+        <p class="fw-bold mb-2">Q{{ forloop.counter }}. {{ answer.question.text }}</p>
+        <ul class="list-unstyled mb-2">
+            {% for choice in answer.question.choices.all %}
+                <li class=" p-2
+                    {% if choice.is_correct %}text-success fw-bold{% endif %}
+                    {% if choice == answer.selected_choice and not choice.is_correct %}text-danger text-decoration-line-through{% endif %}
+                ">
+                    {% if choice == answer.selected_choice %}<i class="bi bi-arrow-right-circle"></i>{% endif %}
+                    {{ choice.text }}
+                    {% if choice.is_correct %}<i class="bi bi-check-circle"></i>{% endif %}
+                </li>
+            {% endfor %}
+        </ul>
+        {% if not answer.selected_choice %}
+            <p class="text-warning mb-1"><i class="bi bi-exclamation-triangle"></i> Not answered</p>
+        {% endif %}
+        {% if answer.question.explanation %}
+            <p class="text-muted small mb-0"><strong>Explanation:</strong> {{ answer.question.explanation }}</p>
+        {% endif %}
+    </div>
+</div>
+{% endfor %}
+
+{% if is_teacher_view %}
+    <a href="{% url 'exams:exam_results' attempt.exam.id %}" class="btn btn-outline-primary mt-3">&larr; Back to Results</a>
+{% else %}
+    <a href="{% url 'exams:my_results' %}" class="btn btn-outline-primary mt-3">&larr; Back to My Results</a>
+{% endif %}
+</div>
+{% endblock %}

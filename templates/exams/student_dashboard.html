@@ -1,0 +1,61 @@
+{% extends "base.html" %}
+{% block title %}Available Exams{% endblock %}
+{% block content %}
+<div class="container">
+<h3 class="mb-4 text-light"><i class="bi bi-journal-check"></i> Available Exams</h3>
+
+{% if exam_status %}
+<div class="row g-3">
+    {% for item in exam_status %}
+    <div class="col-md-6">
+        <div class="card h-100 shadow-sm">
+            <div class="card-body">
+                <h5>{{ item.exam.title }}</h5>
+                <p class="text-muted mb-1">{{ item.exam.subject|default:"General" }}</p>
+                <p class="mb-1"><i class="bi bi-clock"></i> {{ item.exam.duration_minutes }} minutes &middot; {{ item.exam.num_questions }} questions</p>
+                <p class="mb-1"><small class="text-muted">Closes {{ item.exam.end_time|date:"M d, Y H:i" }}</small></p>
+                <p class="mb-3"><small>Attempts used: {{ item.attempts_used }} / {{ item.exam.max_attempts }}</small></p>
+                {% if item.can_attempt %}
+                    <a href="{% url 'exams:exam_start' item.exam.id %}" class="btn btn-primary">Start Exam</a>
+                {% else %}
+                    <button class="btn btn-secondary" disabled>No attempts left</button>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+    {% endfor %}
+</div>
+{% else %}
+<div class="alert alert-info">No exams are available right now. Check back later!</div>
+{% endif %}
+
+{% if upcoming_exams %}
+<h5 class="mt-4 text-light">Upcoming</h5>
+<ul class="list-group">
+    {% for exam in upcoming_exams %}
+    <li class="list-group-item d-flex justify-content-between">
+        <span>{{ exam.title }}</span>
+        <small class="text-muted">Opens {{ exam.start_time|date:"M d, Y H:i" }}</small>
+    </li>
+    {% endfor %}
+</ul>
+{% endif %}
+
+{% if recent_results %}
+<h3 class="mt-4 text-light">Recent Results</h3>
+<ul class="list-group">
+    {% for attempt in recent_results %}
+    <li class="list-group-item d-flex justify-content-between align-items-center">
+        <span>{{ attempt.exam.title }}</span>
+        <span>
+            {{ attempt.percentage }}%
+            {% if attempt.passed %}<span class="badge bg-success">Pass</span>{% else %}<span class="badge bg-danger">Fail</span>{% endif %}
+            <a href="{% url 'exams:result_detail' attempt.id %}" class="btn btn-sm btn-outline-primary ms-2">View</a>
+        </span>
+    </li>
+    {% endfor %}
+</ul>
+{% endif %}
+</div>
+
+{% endblock %}

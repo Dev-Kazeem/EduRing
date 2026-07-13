@@ -1,0 +1,31 @@
+{% extends 'base.html' %}
+
+{% load static %}
+
+{% block content %}
+<nav data-template-id="navbar" class="canva-header fixed top-0 left-0 right-0 z-50 nav-blur border-b border-white/10" style="background: rgba(15, 23, 41, 0.8);">
+   <div class="flex items-center justify-between px-4 py-3">
+    <span data-template-id="nav-brand" class="canva-text font-bold text-xl" style="color: rgb(99, 202, 255); font-weight: 700; font-style: italic; font-size: 24px;">EduRing</span> 
+
+    <button id="nav-toggle" class="md:hidden text-white" aria-label="Toggle navigation"> 
+      <i data-lucide="menu" class="w-6 h-6"></i>
+     </button>
+{% if user.is_authenticated %}
+      {% if user.is_teacher %}
+    <div id="nav-links" class="hidden md:flex items-center gap-3"><a data-template-id="nav-about" class="canva-link text-sm hover:opacity-80 cursor-pointer" style="color: rgb(226, 232, 240); font-weight: 400; font-style: normal; font-size: 16px;">About</a>
+
+       <a data-template-id="nav-contact" class="canva-link text-sm hover:opacity-80 cursor-pointer" style="color: rgb(226, 232, 240); font-weight: 400; font-style: normal; font-size: 16px;">Contact</a> 
+      {% else %}
+       <a data-template-id="nav-login" class="canva-button text-sm px-3 py-1 rounded cursor-pointer" style="background: transparent; color: rgb(99, 202, 255); font-weight: 500; font-style: normal; font-size: 16px;">Login</a>
+
+        <a data-template-id="nav-signup" class="canva-button text-sm px-3 py-1 rounded cursor-pointer" style="background: rgb(91, 127, 255); color: rgb(255, 255, 255); font-weight: 600; font-style: normal; font-size: 16px;">Sign Up</a>
+      {% endif %} 
+         <a data-template-id="nav-logout" class="canva-button text-sm px-3 py-1 rounded cursor-pointer" style="background: rgb(239, 68, 68); color: rgb(255, 255, 255); font-weight: 500; font-style: normal; font-size: 16px;">Logout</a>
+    </div>
+   </div>
+  {% endif %} 
+   <!-- Mobile menu -->
+   <div id="nav-mobile" class="hidden md:hidden flex-col gap-3 px-4 pb-4"><a data-template-id="nav-about-mobile" class="canva-link text-sm hover:opacity-80 cursor-pointer block" style="color: rgb(226, 232, 240); font-weight: 400; font-style: normal; font-size: 16px;">About</a> <a data-template-id="nav-contact-mobile" class="canva-link text-sm hover:opacity-80 cursor-pointer block" style="color: rgb(226, 232, 240); font-weight: 400; font-style: normal; font-size: 16px;">Contact</a> <a data-template-id="nav-login-mobile" class="canva-button text-sm px-3 py-1 rounded inline-block cursor-pointer" style="background: transparent; color: rgb(99, 202, 255); font-weight: 500; font-style: normal; font-size: 16px;">Login</a> <a data-template-id="nav-signup-mobile" class="canva-button text-sm px-3 py-1 rounded inline-block cursor-pointer" style="background: rgb(91, 127, 255); color: rgb(255, 255, 255); font-weight: 600; font-style: normal; font-size: 16px;">Sign Up</a> <a data-template-id="nav-logout-mobile" class="canva-button text-sm px-3 py-1 rounded inline-block cursor-pointer" style="background: rgb(239, 68, 68); color: rgb(255, 255, 255); font-weight: 500; font-style: normal; font-size: 16px;">Logout</a>
+   </div>
+  </nav>
+ {% endblock content %} 

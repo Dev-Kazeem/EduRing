@@ -1,0 +1,763 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}Online Exam Platform{% endblock %}</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600;9..144,700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <link href="{% static 'css/style.css' %}" rel="stylesheet">
+    {% block extra_head %}{% endblock %}
+    <style>
+       body { font-family: 'Inter', sans-serif; margin: 0; background:var(--paper); color:var(--ink);}
+    .hero-section { position: relative; min-height: calc(90 * min(var(--vh, 1vh), 1vh)); }
+    .hero-overlay { position: absolute; inset: 0; background: linear-gradient(135deg, rgba(15,23,41,0.85) 0%, rgba(91,127,255,0.6) 100%); }
+    .hero-img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+    .hero-content { position: relative; z-index: 2; min-height: calc(90 * min(var(--vh, 1vh), 1vh)); padding-top: 18%; }
+    .feature-card { border-radius: 1rem; overflow: hidden; }
+    .feature-card img { height: 200px; object-fit: cover; }
+    .nav-blur { backdrop-filter: blur(12px); }
+
+
+     :root{
+    --ink:#1b2430;
+    --paper:#f7f5f0;
+    --card:#ffffff;
+    --brass:#b8763e;
+    --moss:#3f5d52;
+    --line:#e3ddd0;
+    --muted:#6b6f76;
+  }
+  
+  h1,h2,h3, .display-serif{
+    font-family:'Fraunces', serif;
+  }
+  section{
+    padding:5rem 0;
+  }
+  .section-label{
+    text-transform:uppercase;
+    letter-spacing:.14em;
+    font-size:.75rem;
+    font-weight:600;
+    color:var(--brass);
+  }
+  .section-divider{
+    border:none;
+    height:1px;
+    background:var(--line);
+    margin:0;
+  }
+
+  /* ---------- DESIGN 1: Notebook grid cards ---------- */
+  .design1{
+    background:var(--paper);
+  }
+  .testi-card{
+    background:var(--card);
+    border:1px solid var(--line);
+    border-radius:6px;
+    padding:2rem 1.75rem;
+    height:100%;
+    position:relative;
+    transition:transform .2s ease, box-shadow .2s ease;
+  }
+  .testi-card:hover{
+    transform:translateY(-4px);
+    box-shadow:0 14px 30px rgba(27,36,48,.08);
+  }
+  .testi-card .quote-mark{
+    font-family:'Fraunces', serif;
+    font-size:3rem;
+    line-height:1;
+    color:var(--brass);
+    opacity:.35;
+  }
+  .testi-avatar{
+    width:52px;height:52px;
+    object-fit:cover;
+    border-radius:50%;
+    border:2px solid var(--paper);
+    outline:2px solid var(--brass);
+  }
+  .grade-tag{
+    font-size:.7rem;
+    letter-spacing:.08em;
+    text-transform:uppercase;
+    color:var(--moss);
+    font-weight:600;
+  }
+
+  /* ---------- DESIGN 2: Featured spotlight carousel ---------- */
+  .design2{
+    background:var(--ink);
+    color:#f2efe8;
+  }
+  .design2 .section-label{color:#d9a06b;}
+  .spotlight-frame{
+    background:#242e3b;
+    border-radius:10px;
+    overflow:hidden;
+  }
+  .spotlight-img{
+    width:100%;
+    height:100%;
+    min-height:340px;
+    object-fit:cover;
+  }
+  .spotlight-quote{
+    font-family:'Fraunces', serif;
+    font-size:1.5rem;
+    line-height:1.45;
+    font-weight:500;
+  }
+  #spotlightCarousel .carousel-indicators{
+    position:static;
+    margin-top:2rem;
+    gap:.5rem;
+  }
+  #spotlightCarousel .carousel-indicators [data-bs-target]{
+    width:8px;height:8px;
+    border-radius:50%;
+    background:#5a6472;
+    opacity:1;
+    border:none;
+  }
+  #spotlightCarousel .carousel-indicators .active{
+    background:var(--brass);
+    width:22px;
+    border-radius:4px;
+  }
+  .stat-chip{
+    border:1px solid #3a4451;
+    border-radius:999px;
+    padding:.35rem .9rem;
+    font-size:.8rem;
+    color:#c9cdd3;
+  }
+
+  /* ---------- DESIGN 3: Ledger / interview list ---------- */
+  .design3{
+    background:var(--card);
+  }
+  .ledger-row{
+    border-top:1px solid var(--line);
+    padding:2.25rem 0;
+  }
+  .ledger-row:last-child{
+    border-bottom:1px solid var(--line);
+  }
+  .ledger-photo{
+    width:100%;
+    aspect-ratio:1/1;
+    object-fit:cover;
+    border-radius:8px;
+  }
+  .ledger-index{
+    font-family:'Fraunces', serif;
+    font-size:.95rem;
+    color:var(--brass);
+    font-weight:600;
+  }
+  .ledger-course{
+    font-size:.78rem;
+    text-transform:uppercase;
+    letter-spacing:.08em;
+    color:var(--muted);
+  }
+  .stars i{
+    color:var(--brass);
+    font-size:.85rem;
+  }
+
+
+   .mono{ font-family:'IBM Plex Mono', monospace; }
+  section{ padding:4.5rem 0; }
+  .switch-bar{
+    background:var(--ink);
+    padding:.9rem 0;
+    position:sticky;
+    top:0;
+    z-index:20;
+  }
+  .switch-bar .nav-pills .nav-link{
+    color:#c7cdd4;
+    font-weight:600;
+    font-size:.9rem;
+    border-radius:999px;
+    padding:.45rem 1.2rem;
+  }
+  .switch-bar .nav-pills .nav-link.active{
+    background:var(--amber);
+    color:var(--ink);
+  }
+  .section-label{
+    text-transform:uppercase;
+    letter-spacing:.14em;
+    font-size:.72rem;
+    font-weight:600;
+    color:var(--blue);
+  }
+
+  /* ================= STUDENT PROFILE ================= */
+  .ticket{
+    background:var(--card);
+    border-radius:14px;
+    box-shadow:0 20px 40px rgba(22,32,42,.06);
+    overflow:hidden;
+    position:relative;
+  }
+  .ticket-main{
+    padding:2.25rem 2.25rem 1.75rem;
+  }
+  .ticket-photo{
+    width:88px;height:88px;
+    border-radius:50%;
+    object-fit:cover;
+    border:3px solid var(--paper);
+    outline:2px solid var(--blue);
+  }
+  .ticket-stub{
+    background:var(--blue-deep);
+    color:#dbe6f0;
+    padding:1.5rem 2.25rem;
+    position:relative;
+  }
+  .ticket-perforation{
+    position:absolute;
+    top:0; left:0; right:0;
+    height:0;
+    border-top:2px dashed var(--paper);
+  }
+  .ticket-perforation::before,
+  .ticket-perforation::after{
+    content:"";
+    position:absolute;
+    top:-12px;
+    width:24px;height:24px;
+    background:var(--paper);
+    border-radius:50%;
+  }
+  .ticket-perforation::before{ left:-12px; }
+  .ticket-perforation::after{ right:-12px; }
+  .exam-code{
+    letter-spacing:.06em;
+    font-size:.95rem;
+  }
+  .stat-box{
+    background:var(--card);
+    border:1px solid var(--line);
+    border-radius:10px;
+    padding:1.25rem 1rem;
+    text-align:center;
+  }
+  .stat-box .num{
+    font-family:'Space Grotesk', sans-serif;
+    font-size:1.7rem;
+    font-weight:700;
+    color:var(--blue-deep);
+  }
+  .stat-box .label{
+    font-size:.75rem;
+    color:var(--muted);
+    text-transform:uppercase;
+    letter-spacing:.06em;
+  }
+  .countdown-card{
+    background:linear-gradient(135deg, var(--blue-deep), var(--blue));
+    color:#fff;
+    border-radius:14px;
+    padding:1.75rem 2rem;
+  }
+  .countdown-num{
+    font-family:'IBM Plex Mono', monospace;
+    font-size:2rem;
+    font-weight:600;
+    line-height:1;
+  }
+  .trend-bars{
+    display:flex;
+    align-items:flex-end;
+    gap:.6rem;
+    height:120px;
+  }
+  .trend-bar{
+    flex:1;
+    background:var(--blue);
+    border-radius:4px 4px 0 0;
+    position:relative;
+  }
+  .trend-bar.best{ background:var(--amber); }
+  .trend-bar .pct{
+    position:absolute;
+    top:-1.4rem;
+    left:0; right:0;
+    text-align:center;
+    font-size:.7rem;
+    font-weight:600;
+    color:var(--muted);
+  }
+  .badge-pill{
+    border:1px solid var(--line);
+    border-radius:999px;
+    padding:.4rem 1rem;
+    font-size:.8rem;
+    background:var(--card);
+    display:inline-flex;
+    align-items:center;
+    gap:.4rem;
+  }
+  .history-row{
+    border-top:1px solid var(--line);
+    padding:.9rem 0;
+  }
+  .history-row:last-child{ border-bottom:1px solid var(--line); }
+  .score-tag{
+    font-family:'IBM Plex Mono', monospace;
+    font-weight:600;
+    padding:.15rem .55rem;
+    border-radius:5px;
+    font-size:.85rem;
+  }
+  .score-pass{ background:#e6efe8; color:var(--green); }
+  .score-fail{ background:#f4e4e0; color:var(--red); }
+
+  /* ================= TEACHER PROFILE ================= */
+  .teach-header{
+    background:var(--ink);
+    color:#eceef0;
+    border-radius:14px;
+    padding:2.5rem;
+  }
+  .teach-photo{
+    width:96px;height:96px;
+    border-radius:12px;
+    object-fit:cover;
+    border:2px solid #333d47;
+  }
+  .verified-chip{
+    background:var(--amber);
+    color:var(--ink);
+    font-size:.72rem;
+    font-weight:700;
+    padding:.2rem .55rem;
+    border-radius:5px;
+    text-transform:uppercase;
+    letter-spacing:.04em;
+  }
+  .teach-stat{
+    border-left:2px solid #333d47;
+    padding-left:1rem;
+  }
+  .teach-stat .num{
+    font-family:'Space Grotesk', sans-serif;
+    font-size:1.5rem;
+    font-weight:700;
+    color:#fff;
+  }
+  .teach-stat .label{
+    font-size:.75rem;
+    color:#9aa2ab;
+    text-transform:uppercase;
+    letter-spacing:.05em;
+  }
+  .queue-card{
+    background:var(--card);
+    border:1px solid var(--line);
+    border-radius:10px;
+    padding:1.1rem 1.25rem;
+  }
+  .queue-card + .queue-card{ margin-top:.75rem; }
+  .queue-dot{
+    width:8px;height:8px;
+    border-radius:50%;
+    background:var(--amber);
+    display:inline-block;
+  }
+  .bank-row{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    padding:.7rem 0;
+    border-bottom:1px dashed var(--line);
+    font-size:.9rem;
+  }
+  .bank-row:last-child{ border-bottom:none; }
+  .review-card{
+    background:var(--card);
+    border:1px solid var(--line);
+    border-radius:10px;
+    padding:1.25rem;
+    height:100%;
+  }
+  .review-stars i{ color:var(--amber); font-size:.8rem; }
+
+
+    .img{
+      object-fit: cover;
+      object-position: center;
+      border-radius: 4px;
+      width: 100%;
+      height: 200px;
+    }
+   
+    .card-box{
+      width: 290px;
+      height: 400px;
+    }
+
+</style>
+</head>
+<body class="w-100" style="background: rgb(15, 23, 41); padding-top: 40px;">
+<nav class="navbar navbar-expand-lg navbar-dark fixed-top" style="background: rgba(15, 23, 41, 0.8);">
+    <div class="container">
+        <a class="navbar-brand fw-bold" href="{% url 'home' %}" style="color: rgb(99, 202, 255); font-weight: 700; font-style: italic; font-size: 24px;">
+            <i class="bi bi-mortarboard-fill"></i> EduRing
+        </a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navMenu">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navMenu">
+            <ul class="navbar-nav ms-auto align-items-lg-center">
+                {% if user.is_authenticated %}
+                    {% if user.is_teacher %}
+                        <li class="nav-item"><a class="nav-link text-light" href="{% url 'exams:teacher_dashboard' %}">My Exams</a></li>
+                        <li class="nav-item"><a class="nav-link text-light" href="{% url 'exams:exam_create' %}">Create Exam</a></li>
+                    {% else %}
+                        <li class="nav-item"><a class="nav-link text-light" href="{% url 'exams:student_dashboard' %}">Available Exams</a></li>
+                        <li class="nav-item"><a class="nav-link text-light" href="{% url 'exams:my_results' %}">My Results</a></li>
+                    {% endif %}
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle text-light" href="#" role="button" data-bs-toggle="dropdown">
+                            <i class="bi bi-person-circle"></i> {{ user.get_full_name|default:user.username }}
+                        </a>
+                        <ul class="dropdown-menu dropdown-menu-end">
+                            <li><a class="dropdown-item" href="{% url 'accounts:profile' %}">Profile</a></li>
+                            <li><a class="dropdown-item" href="{% url 'accounts:password_change' %}">Change Password</a></li>
+                            <li><hr class="dropdown-divider"></li>
+                            <li>
+                                <form method="post" action="{% url 'accounts:logout' %}">
+                                    {% csrf_token %}
+                                    <button type="submit" class="dropdown-item"><i class="bi bi-box-arrow-in-left"></i> Logout</button>
+                                </form>
+                            </li>
+                        </ul>
+                    </li>
+                {% else %}
+                    <li class="nav-item d-lg-block d-none"><a class="btn btn-outline-info btn-sm" href="{% url 'accounts:login' %}"><i class="bi bi-box-arrow-in-right"></i> Login</a></li>
+
+                    <li class="nav-item d-lg-block d-none"><a class="btn btn-outline-info btn-sm ms-2" href="{% url 'accounts:register_landing' %}"><i class="bi bi-arrows-collapse-vertical"></i> Sign Up</a></li>
+
+                    <li class="nav-item d-block d-lg-none"><a class="nav-link text-light" href="{% url 'accounts:login' %}"><i class="bi bi-box-arrow-in-right"></i> Login</a></li>
+
+                    <li class="nav-item d-block d-lg-none"><a class="nav-link text-light" href="{% url 'accounts:register_landing' %}"><i class="bi bi-arrows-collapse-vertical"></i> Sign Up</a></li>
+                {% endif %}
+            </ul>
+        </div>
+    </div>
+</nav>
+
+<div class="mx-1 mt-4">
+    {% block content %}
+     <header class="hero-section w-100">
+        <img class="hero-img" loading="lazy" src="https://images.pexels.com/photos/8199160/pexels-photo-8199160.jpeg?auto=compress&amp;cs=tinysrgb&amp;w=1920" alt="Group of college students studying together in a classroom, focused on learning with laptops and books.">
+
+        <div class="hero-overlay"></div>
+        <div class="hero-content flex flex-col items-center justify-center text-center">
+     
+
+
+        <h2 class="font-bold max-w-3xl" style="color: rgb(255, 255, 255); font-weight: 700; font-style: normal; font-size: 24px;">Access Your Exams Online</h2>
+
+
+       <p class="mt-3 opacity-75 max-w-xl text-lg" style="color: rgb(226, 232, 240); font-weight: 400; font-style: normal; font-size: 16px;">A modern platform for creating, taking, and managing exams with real-time results and analytics.</p>
+ 
+       <a class="btn mt-6 font-semibold px-8 py-3 rounded-xl text-lg" style="background: rgb(99, 202, 255); color: rgb(15, 23, 41); font-weight: 600; font-style: normal; font-size: 16px;" href="{%  url 'accounts:login' %}">Get Started Free</a>
+
+    </div>
+    </header>
+ <main>
+   <div class="container py-5">
+      <h2 class="text-center font-bold mb-5" style="color: rgb(241, 245, 249); font-weight: 700; font-style: normal; font-size: 24px;">Why Choose EduRing?</h2>
+
+    <div class="row g-4">
+
+      <div class="col-12 col-md-4">
+     <div class="card shadow" style="background: rgb(30, 41, 59);">
+      <img class="card-img-top img" loading="lazy"  src="https://images.pexels.com/photos/8197499/pexels-photo-8197499.jpeg?auto=compress&amp;cs=tinysrgb&amp;w=800" alt="Happy young woman in graduation gown holding her certificate.">
+
+      <div class="card-body">
+       <h3 class="card-title font-bold mb-2" style="color: rgb(255, 255, 255); font-weight: 700; font-style: normal; font-size: 19px;">Seamless Online Exams</h3>
+       <p class="card-text text-sm" style="color: rgb(148, 163, 184); font-weight: 400; font-style: normal; font-size: 16px;">Take timed exams from anywhere with auto-submit, question shuffling, and anti-cheating measures.</p>
+      </div>
+     </div>
+     </div>  
+
+    <div class="col-12 col-md-4">
+     <div class="card shadow" style="background: rgb(30, 41, 59);">
+      <img class="card-img-top img" loading="lazy" src="https://images.pexels.com/photos/8284020/pexels-photo-8284020.jpeg?auto=compress&amp;cs=tinysrgb&amp;w=800" alt="Happy young woman in graduation gown holding her certificate.">
+
+      <div class="card-body">
+       <h3 class="card-title font-bold mb-2" style="color: rgb(255, 255, 255); font-weight: 700; font-style: normal; font-size: 19px;">Instant Certificates</h3>
+       <p class="card-text text-sm" style="color: rgb(148, 163, 184); font-weight: 400; font-style: normal; font-size: 16px;">Earn digital certificates upon passing. Share achievements with employers and institutions.</p>
+      </div>
+     </div>
+     </div>
+
+    
+     
+    <div class="col-12 col-md-4">
+     <div class="card shadow-lg" style="background: rgb(30, 41, 59);">
+      <img class="card-img-top img" loading="lazy" src="https://images.pexels.com/photos/106344/pexels-photo-106344.jpeg?auto=compress&amp;cs=tinysrgb&amp;w=800" alt="Tablet displaying analytics charts on a desk.">
+
+      <div class="card-body">
+       <h3 class="card-title font-bold mb-2" style="color: rgb(255, 255, 255); font-weight: 700; font-style: normal; font-size: 19px;">Detailed Analytics</h3>
+       <p class="card-text text-sm" style="color: rgb(148, 163, 184); font-weight: 400; font-style: normal; font-size: 16px;">Track performance with rich dashboards showing scores, trends, and areas for improvement.</p>
+      </div>
+     </div>
+    </div>
+    </div>
+</div>
+
+
+<!-- =============================================================== -->
+<!-- DESIGN 1 — Notebook grid of cards                                -->
+<!-- =============================================================== -->
+<section class="design1">
+  <div class="container">
+    <div class="row mb-5">
+      <div class="col-lg-6">
+        <div class="section-label mb-2">What students are saying</div>
+        <h2 class="display-serif fw-semibold" style="font-size:2.25rem;">Real notes from the classroom</h2>
+      </div>
+      <div class="col-lg-6 d-flex align-items-end">
+        <p class="text-muted mb-0">Three terms, three cohorts — a few of the reflections students left after finishing their courses.</p>
+      </div>
+    </div>
+
+    <div class="row g-4">
+      <div class="col-md-4">
+        <div class="testi-card">
+          <div class="quote-mark">&ldquo;</div>
+          <p class="mb-4">The instructor broke down calculus in a way that finally clicked. I went from dreading office hours to actually looking forward to them.</p>
+          <div class="d-flex align-items-center gap-3">
+            <img src="https://i.pravatar.cc/100?img=47" class="testi-avatar" alt="Amara Okafor">
+            <div>
+              <div class="fw-semibold">Amara Okafor</div>
+              <div class="grade-tag">Year 2 · Applied Mathematics</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-md-4">
+        <div class="testi-card">
+          <div class="quote-mark">&ldquo;</div>
+          <p class="mb-4">Group projects used to stress me out, but the structure here taught me how to actually divide work and trust my teammates.</p>
+          <div class="d-flex align-items-center gap-3">
+            <img src="https://i.pravatar.cc/100?img=12" class="testi-avatar" alt="Daniel Reyes">
+            <div>
+              <div class="fw-semibold">Daniel Reyes</div>
+              <div class="grade-tag">Year 3 · Computer Science</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-md-4">
+        <div class="testi-card">
+          <div class="quote-mark">&ldquo;</div>
+          <p class="mb-4">I came in as a transfer student knowing no one. The mentorship program paired me with someone who made the whole term easier.</p>
+          <div class="d-flex align-items-center gap-3">
+            <img src="https://i.pravatar.cc/100?img=32" class="testi-avatar" alt="Priya Nair">
+            <div>
+              <div class="fw-semibold">Priya Nair</div>
+              <div class="grade-tag">Year 1 · Environmental Science</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<hr class="section-divider">
+
+<!-- =============================================================== -->
+<!-- DESIGN 2 — Featured spotlight carousel                           -->
+<!-- =============================================================== -->
+<section class="design2">
+  <div class="container">
+    <div class="section-label mb-2">Featured story</div>
+    <h2 class="display-serif fw-semibold mb-5" style="font-size:2.25rem;">One student, one term, in their own words</h2>
+
+    <div id="spotlightCarousel" class="carousel slide" data-bs-ride="carousel">
+      <div class="carousel-inner">
+
+        <div class="carousel-item active">
+          <div class="row g-0 spotlight-frame align-items-stretch">
+            <div class="col-lg-5">
+              <img src="https://images.unsplash.com/photo-1541534741688-6078c6bfb5c5?w=700&q=80" class="spotlight-img" alt="Student portrait, Jonah Whitfield">
+            </div>
+            <div class="col-lg-7 p-4 p-lg-5 d-flex flex-column justify-content-center">
+              <p class="spotlight-quote mb-4">"I switched majors twice before landing here, and it was the first program that made me feel like the wandering was part of the process, not a setback."</p>
+              <div class="fw-semibold">Jonah Whitfield</div>
+              <div class="text-secondary small mb-3">Senior · Cognitive Science</div>
+              <div class="d-flex gap-2 flex-wrap">
+                <span class="stat-chip">GPA raised 0.6 pts</span>
+                <span class="stat-chip">Now a peer tutor</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="carousel-item">
+          <div class="row g-0 spotlight-frame align-items-stretch">
+            <div class="col-lg-5">
+              <img src="https://images.unsplash.com/photo-1524504388940-b1c1722653e1?w=700&q=80" class="spotlight-img" alt="Student portrait, Lena Vogt">
+            </div>
+            <div class="col-lg-7 p-4 p-lg-5 d-flex flex-column justify-content-center">
+              <p class="spotlight-quote mb-4">"Studying abroad felt impossible on a tight budget until an advisor sat with me and found three scholarships I didn't know existed."</p>
+              <div class="fw-semibold">Lena Vogt</div>
+              <div class="text-secondary small mb-3">Junior · International Relations</div>
+              <div class="d-flex gap-2 flex-wrap">
+                <span class="stat-chip">Studied in 2 countries</span>
+                <span class="stat-chip">Full scholarship</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="carousel-item">
+          <div class="row g-0 spotlight-frame align-items-stretch">
+            <div class="col-lg-5">
+              <img src="https://images.unsplash.com/photo-1517841905240-472988babdf9?w=700&q=80" class="spotlight-img" alt="Student portrait, Marcus Chen">
+            </div>
+            <div class="col-lg-7 p-4 p-lg-5 d-flex flex-column justify-content-center">
+              <p class="spotlight-quote mb-4">"I was ready to drop out after a rough first year. My advisor helped me rebuild a schedule around how I actually work, not how a syllabus assumed I would."</p>
+              <div class="fw-semibold">Marcus Chen</div>
+              <div class="text-secondary small mb-3">Sophomore · Mechanical Engineering</div>
+              <div class="d-flex gap-2 flex-wrap">
+                <span class="stat-chip">Back on track in 1 term</span>
+                <span class="stat-chip">Dean's list, Spring</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+      <div class="carousel-indicators">
+        <button type="button" data-bs-target="#spotlightCarousel" data-bs-slide-to="0" class="active"></button>
+        <button type="button" data-bs-target="#spotlightCarousel" data-bs-slide-to="1"></button>
+        <button type="button" data-bs-target="#spotlightCarousel" data-bs-slide-to="2"></button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<hr class="section-divider">
+
+<!-- =============================================================== -->
+<!-- DESIGN 3 — Ledger-style interview list                           -->
+<!-- =============================================================== -->
+<section class="design3">
+  <div class="container">
+    <div class="section-label mb-2">Course reviews</div>
+    <h2 class="display-serif fw-semibold mb-5" style="font-size:2.25rem;">A running ledger of student feedback</h2>
+
+    <div class="ledger-row row g-4 align-items-center">
+      <div class="col-md-2">
+        <img src="https://i.pravatar.cc/200?img=5" class="ledger-photo" alt="Sofia Marchetti">
+      </div>
+      <div class="col-md-7">
+        <div class="ledger-index mb-1">01</div>
+        <p class="mb-2 fs-5">"The seminar format meant no one could hide in the back row. I learned to speak up in a way lectures never forced me to."</p>
+        <div class="ledger-course">Sofia Marchetti — Comparative Literature, 300-level</div>
+      </div>
+      <div class="col-md-3 text-md-end">
+        <div class="stars mb-1">
+          <i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i>
+        </div>
+        <div class="text-muted small">Completed Fall term</div>
+      </div>
+    </div>
+
+    <div class="ledger-row row g-4 align-items-center">
+      <div class="col-md-2">
+        <img src="https://i.pravatar.cc/200?img=33" class="ledger-photo" alt="Ibrahim Yusuf">
+      </div>
+      <div class="col-md-7">
+        <div class="ledger-index mb-1">02</div>
+        <p class="mb-2 fs-5">"I nearly skipped this elective. It ended up reshaping my whole thesis topic — the professor's feedback was blunt in the best way."</p>
+        <div class="ledger-course">Ibrahim Yusuf — Behavioral Economics, elective</div>
+      </div>
+      <div class="col-md-3 text-md-end">
+        <div class="stars mb-1">
+          <i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-half"></i>
+        </div>
+        <div class="text-muted small">Completed Spring term</div>
+      </div>
+    </div>
+
+    <div class="ledger-row row g-4 align-items-center">
+      <div class="col-md-2">
+        <img src="https://i.pravatar.cc/200?img=44" class="ledger-photo" alt="Hannah Kim">
+      </div>
+      <div class="col-md-7">
+        <div class="ledger-index mb-1">03</div>
+        <p class="mb-2 fs-5">"Lab hours were long, but the TA made sure every question got answered before we left. That kind of patience is rare."</p>
+        <div class="ledger-course">Hannah Kim — Organic Chemistry, core requirement</div>
+      </div>
+      <div class="col-md-3 text-md-end">
+        <div class="stars mb-1">
+          <i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i>
+        </div>
+        <div class="text-muted small">Completed Winter term</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+</main>
+    {% endblock %}
+</div>
+ <footer class="w-full border-top border-dark py-5 m-5" style="background: rgb(15, 23, 41);">
+   <p data-template-id="footer-text" class="canva-text text-center text-sm mb-0" style="color: rgb(100, 116, 139); font-weight: 400; font-style: normal; font-size: 16px;">© 2026 EduRing. All rights reserved.</p>
+ </footer>
+
+{% if messages %}
+    {% for message in messages %}
+        <script>
+            Swal.fire({
+                icon: '{% if message.tags == "success" %}success{% elif message.tags == "error" %}error{% elif message.tags == "warning" %}warning{% else %}info{% endif %}',
+                title: '{{ message }}',
+                timer: 3000,
+                showConfirmButton: false
+            });
+        </script>
+    {% endfor %}
+{% endif %}
+ 
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+{% block extra_scripts %}{% endblock %}
+</body>
+</html>
+
+
+
+<!--
+ {% if messages %}
+        {% for message in messages %}
+            <div class="alert alert-{{ message.tags }} alert-dismissible fade show" role="alert">
+                {{ message }}
+                <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+            </div>
+        {% endfor %}
+    {% endif %}
+-->

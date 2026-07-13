@@ -1,0 +1,250 @@
+{% extends "base.html" %}
+{% block title %}Profile{% endblock %}
+{% block content %}
+
+
+
+<!-- USER PROFILE                                                  -->
+
+<section id="student">
+  <div class="container">
+
+    <div class="ticket mb-4">
+      <div class="ticket-main">
+        <div class="row align-items-center g-4">
+          <div class="col-auto">
+            <img src="{{ user.profile_picture }}" class="ticket-photo" alt="user profile photo">
+          </div>
+          <div class="col">
+            <h3 class="mb-1 fw-bold">{{ profile_user.get_full_name|default:profile_user.username }}</h3>
+            <p class="text-muted mb-1"><i class="bi bi-envelope"></i> {{ profile_user.email }}</p>
+             {% if profile_user.phone_number %}<p class="text-muted mb-1"><i class="bi bi-telephone"></i> {{ profile_user.phone_number }}</p>{% endif %}
+                {% if profile_user.is_teacher and profile_user.department %}
+                    <p class="mb-1"><strong>Department:</strong> {{ profile_user.department }}</p>
+                {% endif %}
+                {% if profile_user.is_student %}
+                    {% if profile_user.roll_number %}<p class="mb-1"><strong>Roll Number:</strong> {{ profile_user.roll_number }}</p>{% endif %}
+                    {% if profile_user.grade_level %}<p class="mb-1"><strong>Grade:</strong> {{ profile_user.grade_level }}</p>{% endif %}
+                {% endif %}
+                {% if profile_user.bio %}<p class="mt-3">{{ profile_user.bio }}</p>{% endif %}
+
+                {% if profile_user == user %}
+                    <a href="{% url 'accounts:profile_edit' %}" class="btn btn-outline-primary mt-3">
+                        <i class="bi bi-pencil"></i> Edit Profile
+                    </a>
+                {% endif %}
+          </div> 
+          <div class="col-auto text-end">
+            <div class="text-white badge-pill mono bg-{% if profile_user.is_teacher %}success{% else %}primary{% endif %}"><i class="bi bi-mortarboard-fill"></i> {{ profile_user.get_role_display }}</div>
+          </div>
+        </div>
+      </div>
+      <div class="ticket-stub">
+        <div class="ticket-perforation"></div>
+        <div class="row">
+          <div class="col-sm-4 mb-2 mb-sm-0">
+            <div class="text-uppercase small" style="letter-spacing:.05em;color:#93a7bc;">Candidate ID</div>
+            <div class="exam-code mono">MRD-2026-08841</div>
+          </div>
+          <div class="col-sm-4 mb-2 mb-sm-0">
+            <div class="text-uppercase small" style="letter-spacing:.05em;color:#93a7bc;">Exam center</div>
+            <div>Lagos Digital Hub — Room B3</div>
+          </div>
+          <div class="col-sm-4">
+            <div class="text-uppercase small" style="letter-spacing:.05em;color:#93a7bc;">Status</div>
+            <div><span class="score-tag score-pass">Active</span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="row g-3 mb-4">
+      <div class="col-6 col-md-3">
+        <div class="stat-box">
+          <div class="num">27</div>
+          <div class="label">Exams taken</div>
+        </div>
+      </div>
+      <div class="col-6 col-md-3">
+        <div class="stat-box">
+          <div class="num">84%</div>
+          <div class="label">Average score</div>
+        </div>
+      </div>
+      <div class="col-6 col-md-3">
+        <div class="stat-box">
+          <div class="num">#12</div>
+          <div class="label">Best rank</div>
+        </div>
+      </div>
+      <div class="col-6 col-md-3">
+        <div class="stat-box">
+          <div class="num">19d</div>
+          <div class="label">Study streak</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="row g-4 mb-4">
+      <div class="col-lg-4">
+        <div class="countdown-card h-100 d-flex flex-column justify-content-between">
+          <div>
+            <div class="text-uppercase small mb-1" style="letter-spacing:.08em;opacity:.8;">Next exam</div>
+            <h5 class="fw-bold mb-0">Data Structures — Midterm</h5>
+          </div>
+          <div class="d-flex align-items-end justify-content-between mt-4">
+            <div>
+              <div class="countdown-num">02:14:36</div>
+              <div class="small" style="opacity:.8;">until check-in opens</div>
+            </div>
+            <i class="bi bi-arrow-up-right-circle-fill fs-3"></i>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-lg-8">
+        <div class="stat-box h-100 text-start">
+          <div class="d-flex justify-content-between align-items-center mb-3">
+            <div class="label mb-0">Score trend — last 6 exams</div>
+            <div class="label mb-0">Class average shown in gray</div>
+          </div>
+          <div class="trend-bars">
+            <div class="trend-bar" style="height:58%;"><span class="pct">72%</span></div>
+            <div class="trend-bar" style="height:65%;"><span class="pct">78%</span></div>
+            <div class="trend-bar" style="height:60%;"><span class="pct">74%</span></div>
+            <div class="trend-bar" style="height:74%;"><span class="pct">81%</span></div>
+            <div class="trend-bar best" style="height:90%;"><span class="pct">94%</span></div>
+            <div class="trend-bar" style="height:80%;"><span class="pct">84%</span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="row g-4">
+      <div class="col-lg-5">
+        <h6 class="section-label mb-3">Achievements</h6>
+        <div class="d-flex flex-wrap gap-2">
+          <span class="badge-pill"><i class="bi bi-lightning-fill text-warning"></i> Fast finisher</span>
+          <span class="badge-pill"><i class="bi bi-graph-up-arrow" style="color:var(--green)"></i> Most improved</span>
+          <span class="badge-pill"><i class="bi bi-shield-check" style="color:var(--blue)"></i> Zero flags</span>
+          <span class="badge-pill"><i class="bi bi-fire" style="color:var(--red)"></i> 19-day streak</span>
+        </div>
+      </div>
+      <div class="col-lg-7 bg-light py-2 stat-box">
+        <h6 class="section-label mb-3">Recent exam history</h6>
+        <div class="history-row d-flex justify-content-between align-items-center">
+          <div>
+            <div class="fw-semibold">Linear Algebra — Quiz 4</div>
+            <div class="text-muted small">Submitted 2 days ago · 45 min</div>
+          </div>
+          <span class="score-tag score-pass">88%</span>
+        </div>
+        <div class="history-row d-flex justify-content-between align-items-center">
+          <div>
+            <div class="fw-semibold">Operating Systems — Final</div>
+            <div class="text-muted small">Submitted 1 week ago · 2 hr</div>
+          </div>
+          <span class="score-tag score-pass">76%</span>
+        </div>
+        <div class="history-row d-flex justify-content-between align-items-center">
+          <div>
+            <div class="fw-semibold">Discrete Math — Quiz 2</div>
+            <div class="text-muted small">Submitted 2 weeks ago · 30 min</div>
+          </div>
+          <span class="score-tag score-fail">54%</span>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<hr style="border-color:var(--line);">
+
+<!-- =============================================================== -->
+<!-- TEACHER PROFILE                                                  -->
+<!-- =============================================================== -->
+<section id="teacher">
+  <div class="container">
+
+    <div class="teach-header mb-4">
+      <div class="row align-items-center g-4">
+        <div class="col-auto">
+          <img src="https://i.pravatar.cc/200?img=68" class="teach-photo" alt="Dr. Samuel Okoye">
+        </div>
+        <div class="col">
+          <div class="d-flex align-items-center gap-2 mb-1">
+            <h3 class="mb-0 fw-bold">{{ profile_user.get_full_name|default:profile_user.username }}</h3>
+            <span class="verified-chip">Verified educator</span>
+          </div>
+          <div style="color:#9aa2ab;">Computer Science & Discrete Mathematics · 8 yrs on Meridian</div>
+          <div class="review-stars mt-2">
+            <i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-half"></i>
+            <span class="ms-2 small" style="color:#c7cdd4;">4.8 from 612 students</span>
+          </div>
+        </div>
+        <div class="col-12 col-lg-auto">
+          <div class="row g-4">
+            <div class="col-4 col-lg-auto teach-stat">
+              <div class="num">14</div>
+              <div class="label">Courses</div>
+            </div>
+            <div class="col-4 col-lg-auto teach-stat">
+              <div class="num">3,204</div>
+              <div class="label">Students</div>
+            </div>
+            <div class="col-4 col-lg-auto teach-stat">
+              <div class="num">96%</div>
+              <div class="label">Graded on time</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="row g-4 mb-4">
+      <div class="col-lg-6">
+        <h6 class="section-label mb-3">Grading queue</h6>
+        <div class="queue-card d-flex justify-content-between align-items-center">
+          <div>
+            <span class="queue-dot me-2"></span><span class="fw-semibold">Data Structures — Final</span>
+            <div class="text-muted small ms-3">42 submissions awaiting review</div>
+          </div>
+          <span class="mono small">Due in 1d</span>
+        </div>
+        <div class="queue-card d-flex justify-content-between align-items-center">
+          <div>
+            <span class="queue-dot me-2" style="background:var(--green);"></span><span class="fw-semibold">Algorithms — Quiz 3</span>
+            <div class="text-muted small ms-3">Auto-graded, 6 flagged for review</div>
+          </div>
+          <span class="mono small">Due in 3d</span>
+        </div>
+        <div class="queue-card d-flex justify-content-between align-items-center">
+          <div>
+            <span class="queue-dot me-2" style="background:var(--blue);"></span><span class="fw-semibold">Discrete Math — Midterm</span>
+            <div class="text-muted small ms-3">Scheduled to open Monday</div>
+          </div>
+          <span class="mono small">Not started</span>
+        </div>
+      </div>
+
+      <div class="col-lg-6">
+        <h6 class="section-label mb-3">Question bank</h6>
+        <div class="stat-box text-start">
+          <div class="bank-row"><span>Multiple choice</span><span class="mono fw-semibold">412 items</span></div>
+          <div class="bank-row"><span>Short answer</span><span class="mono fw-semibold">186 items</span></div>
+          <div class="bank-row"><span>Code execution</span><span class="mono fw-semibold">94 items</span></div>
+          <div class="bank-row"><span>Essay / long form</span><span class="mono fw-semibold">37 items</span></div>
+          <div class="d-flex justify-content-between align-items-center pt-3">
+            <span class="text-muted small">Last question added 3 days ago</span>
+            <button class="btn btn-sm" style="background:var(--blue-deep); color:#fff;">Add question</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+
+{% endblock %}

@@ -1,0 +1,51 @@
+{% extends "base.html" %}
+{% block title %}Manage Questions — {{ exam.title }}{% endblock %}
+{% block content %}
+<div class="container">
+<div class="d-flex justify-content-between align-items-center mb-3">
+    <div>
+        <h3 class="text-light">{{ exam.title }}</h3>
+        <p class="mb-0 text-light btn btn-primary">{{ exam.question_count }} question(s) &middot; {{ exam.total_marks }} total marks</p>
+    </div>
+    <a href="{% url 'exams:question_create' exam.id %}" class="btn btn-primary"><i class="bi bi-plus-lg"></i> Add Question</a>
+</div>
+
+{% if not exam.is_published %}
+
+<div class="alert alert-warning">This exam is currently a <strong>draft</strong>. Publish it from the dashboard once you're ready for students to see it.</div>
+{% endif %}
+
+{% if questions %}
+
+<div class="list-group">
+    {% for question in questions %}
+    <div class="list-group-item">
+        <div class="d-flex justify-content-between align-items-start">
+            <div>
+                <span class="badge bg-secondary me-2">Q{{ question.order }}</span>
+                {{ question.text }}
+                <span class="text-muted">({{ question.marks }} mark{{ question.marks|pluralize }})</span>
+                <ul class="mt-2 mb-0">
+                    {% for choice in question.choices.all %}
+                    <li class="p-2 {% if choice.is_correct %}text-success fw-bold{% endif %}">
+                        {{ choice.text }} {% if choice.is_correct %}<i class="bi bi-check-circle"></i>{% endif %}
+                    </li>
+                    {% endfor %}
+                </ul>
+            </div>
+            <div class="btn-group btn-group-sm">
+                <a href="{% url 'exams:question_update' exam.id question.id %}" class="btn btn-outline-secondary"><i class="bi bi-pencil" title="Edit"></i></a>
+                <a href="{% url 'exams:question_delete' exam.id question.id %}" class="btn btn-outline-danger"><i class="bi bi-trash" title="Delete"></i></a>
+            </div>
+        </div>
+    </div>
+    {% endfor %}
+</div>
+{% else %}
+<div class="alert alert-info">No questions yet. <a href="{% url 'exams:question_create' exam.id %}">Add your first question</a>.
+</div>
+{% endif %}
+
+<a href="{% url 'exams:teacher_dashboard' %}" class="btn btn-outline-primary mt-4">&larr; Back to My Exams</a>
+</div>
+{% endblock %}

@@ -1,0 +1,19 @@
+{% extends "base.html" %}
+{% block title %}Delete Question{% endblock %}
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-md-6">
+        <div class="card shadow-sm border-danger">
+            <div class="card-body p-4">
+                <h4 class="text-danger">Delete this question?</h4>
+                <p>"{{ question.text }}"</p>
+                <form method="post">
+                    {% csrf_token %}
+                    <button type="submit" class="btn btn-danger">Yes, delete it</button>
+                    <a href="{% url 'exams:manage_questions' exam.id %}" class="btn btn-outline-secondary">Cancel</a>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,20 @@
+{% extends "base.html" %}
+{% block title %}Link invalid{% endblock %}
+{% block content %}
+
+<div class="row justify-content-center">
+    <div class="col-md-6">
+        <div class="card shadow-sm text-center border-warning">
+            <div class="card-body p-4">
+                <i class="bi bi-exclamation-triangle display-4 text-warning mb-3"></i>
+                <h3>This link isn't valid</h3>
+                <p class="text-muted">
+                    It may have expired, already been used, or been copied incorrectly.
+                    You can request a new one below.
+                </p>
+                <a href="{% url 'accounts:resend_verification' %}" class="btn btn-primary mt-2">Resend verification email</a>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

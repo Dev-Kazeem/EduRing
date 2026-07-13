@@ -1,0 +1,22 @@
+{% extends "base.html" %}
+{% block title %}Delete Exam{% endblock %}
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-md-6">
+        <div class="card shadow-sm border-danger p-3">
+            <div class="card-body p-4">
+                <h4 class="text-warning">Are You Sure You Want To Delete</h4> 
+                <h3 class="text-danger">( {{ exam.title }}? )</h3>
+                <p class="mb-3">This will permanently delete the exam, all its questions, and all student attempts. This cannot be undone.</p>
+                <form class="text-center" method="post">
+                    {% csrf_token %}
+                    <a href="{% url 'exams:teacher_dashboard' %}" class="btn btn-outline-secondary">Cancel</a>
+                    <button type="submit" class="btn btn-outline-danger">Yes Delete</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+{% endblock %}

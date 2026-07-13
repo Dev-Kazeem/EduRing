@@ -1,0 +1,47 @@
+{% extends "base.html" %}
+{% block title %}My Results{% endblock %}
+{% block content %}
+<div class="container">
+<h3 class="mb-4 text-light"><i class="bi bi-bar-chart-line"></i> My Results</h3>
+
+{% if attempts %}
+<div class="table-responsive stat-box">
+    <table class="table table-hover align-middle">
+        <thead>
+            <tr>
+                <th style="text-align: left;">Exam</th>
+                <th>Attempt #</th>
+                <th>Score</th>
+                <th>Percentage</th>
+                <th>Result</th>
+                <th>Submitted</th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for attempt in attempts %}
+            <tr>
+                <td style="text-align: left;">{{ attempt.exam.title }}</td>
+                <td>{{ attempt.attempt_number }}</td>
+                <td>{{ attempt.score }} / {{ attempt.exam.total_marks }}</td>
+                <td>{{ attempt.percentage }}%</td>
+                <td>
+                    {% if attempt.passed %}
+                        <span class="badge bg-success">Pass</span>
+                    {% else %}
+                        <span class="badge bg-danger">Fail</span>
+                    {% endif %}
+                </td>
+                <td><small>{{ attempt.submitted_at|date:"M d, Y H:i" }}</small></td>
+                <td><a href="{% url 'exams:result_detail' attempt.id %}" class="btn btn-sm btn-outline-primary">View</a></td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% else %}
+<div class="alert alert-info">You haven't completed any exams yet.</div>
+{% endif %}
+</div>
+
+{% endblock %}

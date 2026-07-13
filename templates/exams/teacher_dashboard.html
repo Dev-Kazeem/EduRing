@@ -1,0 +1,76 @@
+{% extends "base.html" %}
+{% block title %}My Exams{% endblock %}
+{% block content %}
+<div class="container h-100">
+
+  
+
+
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <h3 class="text-white"><i class="bi bi-journal-text"></i> My Exams</h3>
+    <a href="{% url 'exams:exam_create' %}" class="btn btn-primary"><i class="bi bi-plus-lg"></i> Create Exam</a>
+</div>
+
+{% if exams %}
+
+<div class="table-responsive exam-table p-4 stat-box">
+    <table class="table table-hover align-middle" >
+        <thead>
+            <tr>
+                <th style="text-align: left;">Course Title</th>
+                <th>Code</th>
+                <th>Questions</th>
+                <th>Attempts</th>
+                <th>Window</th>
+                <th>Status</th>
+                <th class="text-end">Actions</th>
+            </tr>
+        </thead>
+        <tbody> 
+        {% for exam in exams %}
+            <tr>
+                <td style="text-align: left;">{{ exam.title }}</td>
+                <td>{{ exam.subject|default:"—" }}</td>
+                <td>{{ exam.num_questions }}</td>
+                <td>{{ exam.num_attempts }}</td>
+                <td><small>{{ exam.start_time|date:"M d, H:i" }} &rarr; {{ exam.end_time|date:"M d, H:i" }}</small></td>
+                <td>
+                    {% if exam.is_published %}
+                        <span class="badge bg-success">Published</span>
+                    {% else %}
+                        <span class="badge bg-secondary">Draft</span>
+                    {% endif %}
+                </td>
+                
+            <td class="text-endz row-actions">
+              <div class="dropdown">
+                <button class="btn btn-sm dropdown-toggle" data-bs-toggle="dropdown"><i class="bi bi-three-dots"></i></button>
+                <ul class="dropdown-menu dropdown-menu-start">
+                  <li><a class="dropdown-item" href="{% url 'exams:manage_questions' exam.id %}"><i class="bi bi-list-check me-2"></i>Question</a></li>
+                  <li><a class="dropdown-item" href="{% url 'exams:exam_update' exam.id %}"><i class="bi bi-pencil me-2"></i>Edit</a></li>
+                  <li><a class="dropdown-item" href="{% url 'exams:exam_results' exam.id %}"><i class="bi bi-files me-2"></i>Results</a></li>
+                  <li>
+                   <form method="post" action="{% url 'exams:exam_toggle_publish' exam.id %}" class="d-inline">
+                      {% csrf_token %}
+                      <button type="submit" class="ms-2 btn btn-outline-{% if exam.is_published %}warning{% else %}success{% endif %}" title="{% if exam.is_published %}Unpublish{% else %}Publish{% endif %}">
+                        <i class="bi bi-{% if exam.is_published %}eye-slash{% else %}eye{% endif %} me-2"></i>
+                        {% if exam.is_published %}Unpublish{% else %}Publish{% endif %}
+                      </button>
+                   </form>
+                  </li>     
+                  <li><hr class="dropdown-divider"></li>
+                  <li><a class="dropdown-item text-danger" href="{% url 'exams:exam_delete' exam.id %}" ><i class="bi bi-trash me-2"></i>Delete</a></li>
+                </ul>
+              </div> 
+            </td>
+            </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% else %}
+<div class="alert alert-info">You haven't created any exams yet. <a href="{% url 'exams:exam_create' %}">Create your first exam</a>.</div>
+{% endif %}
+</div>
+{% endblock %}

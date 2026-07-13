@@ -1,0 +1,49 @@
+{% extends "base.html" %}
+{% load crispy_forms_tags %}
+{% block title %}{{ title }}{% endblock %}
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-md-8">
+        <div class="card shadow-sm">
+            <div class="card-body p-4">
+                <h3 class="mb-1">{{ title }}</h3>
+                <p class="text-muted">{{ exam.title }}</p>
+
+                <form method="post">
+                    {% csrf_token %}
+                    {{ form|crispy }}
+
+                    <hr>
+                    <h5>Answer Choices</h5>
+                    <p class="text-muted small">Add at least two choices and mark exactly one as correct.</p>
+
+                    {{ formset.management_form }}
+                    {% if formset.non_form_errors %}
+                        <div class="alert alert-danger">{{ formset.non_form_errors }}</div>
+                    {% endif %}
+
+                    {% for choice_form in formset %}
+                        <div class="row align-items-center mb-2 border rounded p-2 mx-0">
+                            <div class="col-8">{{ choice_form.text|as_crispy_field }}</div>
+                            <div class="col-2 text-center">
+                                <label class="form-label d-block small">Correct?</label>
+                                {{ choice_form.is_correct }}
+                            </div>
+                            <div class="col-2 text-center">
+                                {% if choice_form.instance.pk %}
+                                    <label class="form-label d-block small">Remove</label>
+                                    {{ choice_form.DELETE }}
+                                {% endif %}
+                            </div>
+                            {% for hidden in choice_form.hidden_fields %}{{ hidden }}{% endfor %}
+                        </div>
+                    {% endfor %}
+
+                    <button type="submit" class="btn btn-primary mt-3">Save Question</button>
+                    <a href="{% url 'exams:manage_questions' exam.id %}" class="btn btn-outline-secondary mt-3">Cancel</a>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
