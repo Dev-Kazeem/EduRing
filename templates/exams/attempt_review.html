@@ -1,7 +1,7 @@
 {% extends "base.html" %}
 {% block title %}Exam Review{% endblock %}
 {% block content %}
-<div class="container">
+<div class="container space-top">
 <div class="card shadow-sm mb-4">
     <div class="card-body">
         <h3>{{ attempt.exam.title }}</h3>
@@ -29,10 +29,10 @@
     </div>
 </div>
 
-{% for answer in answers %}
 <h3 class="text-light">Answer Breakdown</h3>
+{% for answer in answers %}
 
-<div class="card mb-2 {% if answer.is_correct %}border-success{% else %}border-danger{% endif %}">
+<div class="card mb-3 {% if answer.is_correct %}border-success{% else %}border-danger{% endif %}">
     <div class="card-body">
         <p class="fw-bold mb-2">Q{{ forloop.counter }}. {{ answer.question.text }}</p>
         <ul class="list-unstyled mb-2">

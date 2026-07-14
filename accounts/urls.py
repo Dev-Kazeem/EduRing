@@ -10,8 +10,12 @@ urlpatterns = [
     path('register/student/', views.register_student, name='register_student'),
     path('register/teacher/', views.register_teacher, name='register_teacher'),
 
-    path('login/', auth_views.LoginView.as_view(template_name='registration/login.html', massages='Your are loggin successfully'), name='login'),
-    path('logout/', auth_views.LogoutView.as_view( massages='Your are logout'), name='logout'),
+    #path('login/', auth_views.LoginView.as_view(template_name='registration/login.html'), name='login'),
+    #path('logout/', auth_views.LogoutView.as_view(), name='logout'),
+
+
+    path('login/', views.login_view, name='login'),
+    path('logout/', views.logout_view, name='logout'),
 
     path(
         'password-change/',

@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{% block title %}Online Exam Platform{% endblock %}</title>
+    <title>{% block title %}EduRing Home Page{% endblock %}</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" rel="stylesheet">
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -410,10 +410,14 @@
       height: 400px;
     }
 
+    .space-top{
+      margin-top: 80px;
+    }
+
 </style>
 </head>
 <body class="w-100" style="background: rgb(15, 23, 41); padding-top: 40px;">
-<nav class="navbar navbar-expand-lg navbar-dark fixed-top" style="background: rgba(15, 23, 41, 0.8);">
+<nav class="navbar navbar-expand-lg navbar-dark fixed-top border-bottom border-secondary" style="background: rgba(15, 23, 41, 0.8);">
     <div class="container">
         <a class="navbar-brand fw-bold" href="{% url 'home' %}" style="color: rgb(99, 202, 255); font-weight: 700; font-style: italic; font-size: 24px;">
             <i class="bi bi-mortarboard-fill"></i> EduRing
@@ -437,6 +441,9 @@
                         </a>
                         <ul class="dropdown-menu dropdown-menu-end">
                             <li><a class="dropdown-item" href="{% url 'accounts:profile' %}">Profile</a></li>
+                            {% if user.is_superuser %}
+                            <li><a class="dropdown-item" href="{% url 'admin:index' %}">Admin Panel</a></li>
+                            {% endif %}
                             <li><a class="dropdown-item" href="{% url 'accounts:password_change' %}">Change Password</a></li>
                             <li><hr class="dropdown-divider"></li>
                             <li>
@@ -475,9 +482,12 @@
 
 
        <p class="mt-3 opacity-75 max-w-xl text-lg" style="color: rgb(226, 232, 240); font-weight: 400; font-style: normal; font-size: 16px;">A modern platform for creating, taking, and managing exams with real-time results and analytics.</p>
- 
+     
+     {% if user.is_authenticated %}
+       <a class="btn mt-6 font-semibold px-8 py-3 rounded-xl text-lg" style="background: rgb(99, 202, 255); color: rgb(15, 23, 41); font-weight: 600; font-style: italic; font-size: 16px;">Online Examination</a>
+     {% else %} 
        <a class="btn mt-6 font-semibold px-8 py-3 rounded-xl text-lg" style="background: rgb(99, 202, 255); color: rgb(15, 23, 41); font-weight: 600; font-style: normal; font-size: 16px;" href="{%  url 'accounts:login' %}">Get Started Free</a>
-
+     {% endif %} 
     </div>
     </header>
  <main>
@@ -532,7 +542,7 @@
     <div class="row mb-5">
       <div class="col-lg-6">
         <div class="section-label mb-2">What students are saying</div>
-        <h2 class="display-serif fw-semibold" style="font-size:2.25rem;">Real notes from the classroom</h2>
+        <h2 class="display-serif fw-semibold" style="font-size:2.25rem;">Real notes from the students</h2>
       </div>
       <div class="col-lg-6 d-flex align-items-end">
         <p class="text-muted mb-0">Three terms, three cohorts — a few of the reflections students left after finishing their courses.</p>
@@ -543,12 +553,26 @@
       <div class="col-md-4">
         <div class="testi-card">
           <div class="quote-mark">&ldquo;</div>
-          <p class="mb-4">The instructor broke down calculus in a way that finally clicked. I went from dreading office hours to actually looking forward to them.</p>
+          <p class="mb-4">Before EduRing, I used to cram everything the night before an exam. Now I use their timed mock tests every week, and it's completely changed how I prepare. My grades have genuinely improved this semester.</p>
           <div class="d-flex align-items-center gap-3">
-            <img src="https://i.pravatar.cc/100?img=47" class="testi-avatar" alt="Amara Okafor">
+            <img src="https://images.unsplash.com/photo-1750767782273-ee4958ad3983?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTV8fGJsYWNrJTIwc3R1ZGVudCUyMHByb2ZpbGUlMjBwaWN0dXJlfGVufDB8fDB8fHww"  loading="lazy" class="testi-avatar" alt="Amara Okafor">
+            <div>
+              <div class="fw-semibold">Kazeem Shehu</div>
+              <div class="grade-tag">Year 2 · Computer Science</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-md-4">
+        <div class="testi-card">
+          <div class="quote-mark">&ldquo;</div>
+          <p class="mb-4">EduRing made exam prep so much less stressful. The practice tests felt just like the real thing, and I could track my weak areas easily. I went from panicking about my finals to actually feeling ready.</p>
+          <div class="d-flex align-items-center gap-3">
+            <img src="https://media.istockphoto.com/id/2229771877/photo/head-shot-portrait-calm-beautiful-business-lady-look-at-camera.webp?a=1&b=1&s=612x612&w=0&k=20&c=MMqkgKQ12icyrrFNOgdys-fRqUn9K1H4GAUKC5oM2q8="  loading="lazy" class="testi-avatar" alt="Daniel Reyes">
             <div>
               <div class="fw-semibold">Amara Okafor</div>
-              <div class="grade-tag">Year 2 · Applied Mathematics</div>
+              <div class="grade-tag">Year 3 · Applied Mathematics</div>
             </div>
           </div>
         </div>
@@ -557,25 +581,11 @@
       <div class="col-md-4">
         <div class="testi-card">
           <div class="quote-mark">&ldquo;</div>
-          <p class="mb-4">Group projects used to stress me out, but the structure here taught me how to actually divide work and trust my teammates.</p>
+          <p class="mb-4">What I love about EduRing is the instant feedback. I don't have to wait days to know what I got wrong — I can fix my mistakes right away and move on to the next topic.</p>
           <div class="d-flex align-items-center gap-3">
-            <img src="https://i.pravatar.cc/100?img=12" class="testi-avatar" alt="Daniel Reyes">
+            <img src="https://media.istockphoto.com/id/2257280124/photo/head-shot-portrait-of-serious-young-african-american-woman.webp?a=1&b=1&s=612x612&w=0&k=20&c=p7iqCKtxyJPrsQASY-LKPObJ3p36PrSFOjnCBzfGhOk="  loading="lazy" class="testi-avatar" alt="Priya Nair">
             <div>
-              <div class="fw-semibold">Daniel Reyes</div>
-              <div class="grade-tag">Year 3 · Computer Science</div>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <div class="col-md-4">
-        <div class="testi-card">
-          <div class="quote-mark">&ldquo;</div>
-          <p class="mb-4">I came in as a transfer student knowing no one. The mentorship program paired me with someone who made the whole term easier.</p>
-          <div class="d-flex align-items-center gap-3">
-            <img src="https://i.pravatar.cc/100?img=32" class="testi-avatar" alt="Priya Nair">
-            <div>
-              <div class="fw-semibold">Priya Nair</div>
+              <div class="fw-semibold">Rose Merry</div>
               <div class="grade-tag">Year 1 · Environmental Science</div>
             </div>
           </div>
@@ -601,11 +611,11 @@
         <div class="carousel-item active">
           <div class="row g-0 spotlight-frame align-items-stretch">
             <div class="col-lg-5">
-              <img src="https://images.unsplash.com/photo-1541534741688-6078c6bfb5c5?w=700&q=80" class="spotlight-img" alt="Student portrait, Jonah Whitfield">
+              <img src="https://images.unsplash.com/photo-1587613991119-fbbe8e90531d?q=80&w=403&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" loading="lazy" class="spotlight-img" alt="Student portrait, Jonah Whitfield">
             </div>
             <div class="col-lg-7 p-4 p-lg-5 d-flex flex-column justify-content-center">
-              <p class="spotlight-quote mb-4">"I switched majors twice before landing here, and it was the first program that made me feel like the wandering was part of the process, not a setback."</p>
-              <div class="fw-semibold">Jonah Whitfield</div>
+              <p class="spotlight-quote mb-4">"The platform is super easy to use, even with a weak internet connection. I was able to take my practice exams from my phone during a power outage at school. That flexibility really helped me."</p>
+              <div class="fw-semibold">Khalid Abubakar</div>
               <div class="text-secondary small mb-3">Senior · Cognitive Science</div>
               <div class="d-flex gap-2 flex-wrap">
                 <span class="stat-chip">GPA raised 0.6 pts</span>
@@ -618,11 +628,11 @@
         <div class="carousel-item">
           <div class="row g-0 spotlight-frame align-items-stretch">
             <div class="col-lg-5">
-              <img src="https://images.unsplash.com/photo-1524504388940-b1c1722653e1?w=700&q=80" class="spotlight-img" alt="Student portrait, Lena Vogt">
+              <img src="https://images.unsplash.com/photo-1645620359081-60f4b3514cd7?q=80&w=435&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" loading="lazy" class="spotlight-img" alt="Student portrait, Lena Vogt">
             </div>
             <div class="col-lg-7 p-4 p-lg-5 d-flex flex-column justify-content-center">
-              <p class="spotlight-quote mb-4">"Studying abroad felt impossible on a tight budget until an advisor sat with me and found three scholarships I didn't know existed."</p>
-              <div class="fw-semibold">Lena Vogt</div>
+              <p class="spotlight-quote mb-4">"I was really nervous about my professional certification exam, but EduRing's practice questions matched the real exam style almost perfectly. I felt so much more confident walking in."</p>
+              <div class="fw-semibold">Boluwatife Willians</div>
               <div class="text-secondary small mb-3">Junior · International Relations</div>
               <div class="d-flex gap-2 flex-wrap">
                 <span class="stat-chip">Studied in 2 countries</span>
@@ -635,12 +645,12 @@
         <div class="carousel-item">
           <div class="row g-0 spotlight-frame align-items-stretch">
             <div class="col-lg-5">
-              <img src="https://images.unsplash.com/photo-1517841905240-472988babdf9?w=700&q=80" class="spotlight-img" alt="Student portrait, Marcus Chen">
+              <img src="https://images.unsplash.com/photo-1728905676162-964d3e16a619?q=80&w=465&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" loading="lazy" class="spotlight-img" alt="Student portrait, Marcus Chen">
             </div>
             <div class="col-lg-7 p-4 p-lg-5 d-flex flex-column justify-content-center">
-              <p class="spotlight-quote mb-4">"I was ready to drop out after a rough first year. My advisor helped me rebuild a schedule around how I actually work, not how a syllabus assumed I would."</p>
-              <div class="fw-semibold">Marcus Chen</div>
-              <div class="text-secondary small mb-3">Sophomore · Mechanical Engineering</div>
+              <p class="spotlight-quote mb-4">"As someone who struggles with time management, the countdown timer and progress tracker on EduRing kept me disciplined. It felt like having a study partner holding me accountable."</p>
+              <div class="fw-semibold">Egwuda Frank</div>
+              <div class="text-secondary small mb-3">Senior · Computer Science</div>
               <div class="d-flex gap-2 flex-wrap">
                 <span class="stat-chip">Back on track in 1 term</span>
                 <span class="stat-chip">Dean's list, Spring</span>
@@ -672,12 +682,12 @@
 
     <div class="ledger-row row g-4 align-items-center">
       <div class="col-md-2">
-        <img src="https://i.pravatar.cc/200?img=5" class="ledger-photo" alt="Sofia Marchetti">
+        <img src="https://i.pravatar.cc/400?img=16" class="ledger-photo" alt="Sofia Marchetti">
       </div>
       <div class="col-md-7">
         <div class="ledger-index mb-1">01</div>
-        <p class="mb-2 fs-5">"The seminar format meant no one could hide in the back row. I learned to speak up in a way lectures never forced me to."</p>
-        <div class="ledger-course">Sofia Marchetti — Comparative Literature, 300-level</div>
+        <p class="mb-2 fs-5">"I recommend EduRing to all my coursemates. It's simple, fast, and actually helps you understand your weak areas instead of just giving you a score and leaving you to guess."</p>
+        <div class="ledger-course">Sofia Musa — Comparative Literature, 300-level</div>
       </div>
       <div class="col-md-3 text-md-end">
         <div class="stars mb-1">
@@ -689,11 +699,11 @@
 
     <div class="ledger-row row g-4 align-items-center">
       <div class="col-md-2">
-        <img src="https://i.pravatar.cc/200?img=33" class="ledger-photo" alt="Ibrahim Yusuf">
+        <img src="https://i.pravatar.cc/400?img=51" class="ledger-photo" alt="Ibrahim Yusuf">
       </div>
       <div class="col-md-7">
         <div class="ledger-index mb-1">02</div>
-        <p class="mb-2 fs-5">"I nearly skipped this elective. It ended up reshaping my whole thesis topic — the professor's feedback was blunt in the best way."</p>
+        <p class="mb-2 fs-5">"I used to dread multiple-choice exams because of how easy it is to mix up answers under pressure. EduRing's practice mode helped me build speed and accuracy, so by the time I sat the real exam, it felt familiar instead of scary."</p>
         <div class="ledger-course">Ibrahim Yusuf — Behavioral Economics, elective</div>
       </div>
       <div class="col-md-3 text-md-end">
@@ -706,12 +716,12 @@
 
     <div class="ledger-row row g-4 align-items-center">
       <div class="col-md-2">
-        <img src="https://i.pravatar.cc/200?img=44" class="ledger-photo" alt="Hannah Kim">
+        <img src="https://plus.unsplash.com/premium_photo-1681493913693-5f2260905f34?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8OXx8YmxhY2slMjBzdHVkZW50JTIwcHJvZmlsZSUyMHBpY3R1cmV8ZW58MHx8MHx8fDA%3D" loading="lazy" class="ledger-photo" alt="Hannah Kim">
       </div>
       <div class="col-md-7">
         <div class="ledger-index mb-1">03</div>
-        <p class="mb-2 fs-5">"Lab hours were long, but the TA made sure every question got answered before we left. That kind of patience is rare."</p>
-        <div class="ledger-course">Hannah Kim — Organic Chemistry, core requirement</div>
+        <p class="mb-2 fs-5">"Honestly, the analytics feature is what won me over. Seeing exactly which topics I was weak in, in percentages, meant I wasn't just guessing what to study. I focused my last two weeks on exactly what I needed, and it paid off."</p>
+        <div class="ledger-course">Hauwa Khalid — Organic Chemistry, core requirement</div>
       </div>
       <div class="col-md-3 text-md-end">
         <div class="stars mb-1">

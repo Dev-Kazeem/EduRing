@@ -1,7 +1,7 @@
 {% extends "base.html" %}
 {% block title %}Results — {{ exam.title }}{% endblock %}
 {% block content %}
-<div class="container">
+<div class="container space-top">
 <h3 class="text-light">Results: {{ exam.title }}</h3>
 <p class="btn btn-primary text-light">{{ exam.total_marks }} total marks &middot; Pass mark: {{ exam.pass_percentage }}%</p>
 
