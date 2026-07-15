@@ -1,5 +1,5 @@
 from django import forms
-from django.contrib.auth.forms import UserCreationForm
+from django.contrib.auth.forms import AuthenticationForm, UserCreationForm
 
 from .models import CustomUser
 
@@ -26,6 +26,7 @@ class StudentSignUpForm(UserCreationForm):
         user.last_name = self.cleaned_data['last_name']
         user.roll_number = self.cleaned_data.get('roll_number', '')
         user.grade_level = self.cleaned_data.get('grade_level', '')
+        user.is_active = False  # activated once the email link is clicked
         if commit:
             user.save()
         return user
@@ -51,6 +52,7 @@ class TeacherSignUpForm(UserCreationForm):
         user.first_name = self.cleaned_data['first_name']
         user.last_name = self.cleaned_data['last_name']
         user.department = self.cleaned_data.get('department', '')
+        user.is_active = False  # activated once the email link is clicked
         if commit:
             user.save()
         return user
@@ -65,6 +67,7 @@ class ProfileUpdateForm(forms.ModelForm):
         ]
         widgets = {
             'bio': forms.Textarea(attrs={'rows': 3}),
+            'profile_picture': forms.ClearableFileInput(attrs={'accept': 'image/*'}),
         }
 
     def __init__(self, *args, **kwargs):
@@ -76,3 +79,24 @@ class ProfileUpdateForm(forms.ModelForm):
             elif self.instance.is_teacher:
                 self.fields.pop('roll_number', None)
                 self.fields.pop('grade_level', None)
+
+
+class EmailAwareAuthenticationForm(AuthenticationForm):
+    """
+    Same as Django's login form, but gives a specific, actionable message
+    when the account exists and the password is correct but the email
+    hasn't been verified yet (i.e. is_active=False).
+    """
+
+    def confirm_login_allowed(self, user):
+        if not user.is_active:
+            raise forms.ValidationError(
+                "Please verify your email address before logging in. "
+                "Check your inbox for the verification link, or use the "
+                "'Resend verification email' link below.",
+                code='inactive',
+            )
+
+
+class ResendVerificationForm(forms.Form):
+    email = forms.EmailField(label="Your email address")

@@ -8,12 +8,12 @@
 
 <section id="student">
   <div class="container">
-
     <div class="ticket mb-4">
       <div class="ticket-main">
         <div class="row align-items-center g-4">
           <div class="col-auto">
-            <img src="{{ user.profile_picture }}" class="ticket-photo" alt="user profile photo">
+            {% include "accounts/_avatar.html" with avatar_user=profile_user size=80 %}
+           <!-- <img src="{{ user.profile.image.url }}" class="ticket-photo" alt="user profile picture">-->
           </div>
           <div class="col">
             <h3 class="mb-1 fw-bold">{{ profile_user.get_full_name|default:profile_user.username }}</h3>
@@ -52,7 +52,7 @@
           {% endif %}
           <div class="col-sm-4 mb-2 mb-sm-0">
             <div class="text-uppercase small" style="letter-spacing:.05em;color:#93a7bc;">Exam center</div>
-            <div class="text-secondary">Lagos Digital Hub — Room B3</div>
+            <div class="text-secondary">EduRing Digital Hub — Room B3</div>
           </div>
           <div class="col-sm-4">
             <div class="text-uppercase small" style="letter-spacing:.05em;color:#93a7bc;">Status</div>

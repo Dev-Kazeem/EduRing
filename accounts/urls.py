@@ -2,6 +2,7 @@ from django.contrib.auth import views as auth_views
 from django.urls import path
 
 from . import views
+from .forms import EmailAwareAuthenticationForm
 
 app_name = 'accounts'
 
@@ -10,12 +11,16 @@ urlpatterns = [
     path('register/student/', views.register_student, name='register_student'),
     path('register/teacher/', views.register_teacher, name='register_teacher'),
 
-    #path('login/', auth_views.LoginView.as_view(template_name='registration/login.html'), name='login'),
-    #path('logout/', auth_views.LogoutView.as_view(), name='logout'),
-
+    path(
+        'verify/<str:uidb64>/<str:token>/',
+        views.verify_email,
+        name='verify_email',
+    ),
+    path('resend-verification/', views.resend_verification, name='resend_verification'),
 
     path('login/', views.login_view, name='login'),
     path('logout/', views.logout_view, name='logout'),
+
 
     path(
         'password-change/',
