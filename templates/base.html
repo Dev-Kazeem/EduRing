@@ -397,6 +397,57 @@
   .review-stars i{ color:var(--amber); font-size:.8rem; }
 
 
+ .contact-card{
+            transition:.3s;
+            border:none;
+            border-radius:15px;
+        }
+
+        .contact-card:hover{
+            transform:translateY(-5px);
+            box-shadow:0 10px 30px rgba(0,0,0,.15);
+        }
+
+        .icon-circle{
+            width:60px;
+            height:60px;
+            border-radius:50%;
+            display:flex;
+            align-items:center;
+            justify-content:center;
+            background:#0d6efd;
+            color:white;
+            font-size:25px;
+            margin:auto;
+        }
+
+        .form-section{
+            background:white;
+            border-radius:15px;
+            box-shadow:0 10px 30px rgba(0,0,0,.08);
+        }
+
+        iframe{
+            border-radius:15px;
+        }
+
+        footer{
+            background:#212529;
+            color:white;
+        }
+
+        .social a{
+            color:white;
+            font-size:22px;
+            margin:0 10px;
+            transition:.3s;
+        }
+
+        .social a:hover{
+            color:#0d6efd;
+        }
+
+
     .img{
       object-fit: cover;
       object-position: center;
@@ -432,6 +483,7 @@
                         <li class="nav-item"><a class="nav-link text-light" href="{% url 'exams:teacher_dashboard' %}">My Exams</a></li>
                         <li class="nav-item"><a class="nav-link text-light" href="{% url 'exams:exam_create' %}">Create Exam</a></li>
                     {% else %}
+                        <li class="nav-item"><a class="nav-link text-light" href="{% url 'contact' %}">Contact Us</a></li>
                         <li class="nav-item"><a class="nav-link text-light" href="{% url 'exams:student_dashboard' %}">Available Exams</a></li>
                         <li class="nav-item"><a class="nav-link text-light" href="{% url 'exams:my_results' %}">My Results</a></li>
                     {% endif %}
@@ -736,7 +788,25 @@
 </main>
     {% endblock %}
 </div>
- <footer class="w-full border-top border-dark py-5 m-5" style="background: rgb(15, 23, 41);">
+ <footer class="w-full border-top border-dark py-3 space-top" style="background: rgb(15, 23, 41);">
+    <div class="container text-center">
+          <h4>Let's Connect</h4>
+        <div class="social my-3">
+
+            <a href="https://www.facebook.com/kazeem.shehu" target="_blank"><i class="bi bi-facebook"></i></a>            
+            <a href="https://wa.me/2348114598006" target="_blank"><i class="bi bi-whatsapp"></i></a>
+
+            <a href="#"><i class="bi bi-twitter-x"></i></a>
+
+            <a href="#"><i class="bi bi-instagram"></i></a>
+
+            <a href="https://www.linkedin.com/in/kazeem-sheu/" target="_blank"><i class="bi bi-linkedin"></i></a>
+
+            <a href="https://github.com/yourusername" target="_blank"><i class="bi bi-github"></i></a>
+        </div>
+        
+    </div>
+        
    <p data-template-id="footer-text" class="canva-text text-center text-sm mb-0" style="color: rgb(100, 116, 139); font-weight: 400; font-style: normal; font-size: 16px;">© 2026 EduRing. All rights reserved.</p>
  </footer>
 

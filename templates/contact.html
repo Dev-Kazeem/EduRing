@@ -1,0 +1,140 @@
+{% extends "base.html" %}
+{% block title %}Contact{% endblock %}
+
+
+{% block content %}
+
+<!-- Hero -->
+<section class="hero text-center">
+    <div class="container">
+        <h1 class="display-4 fw-bold text-light">Contact Us</h1>
+        <p class="lead text-light">
+            We'd love to hear from you. Send us your questions, feedback or suggestions.
+            <p class="text-light">always active  <a href="https://wa.me/2348114598006" class="text-success lead" target="_blank"><i class="bi bi-whatsapp"></i>n</a> whatsapp</p>
+        </p>
+    </div>
+</section>
+
+<!-- Contact Information -->
+<section class="py-5">
+    <div class="container">
+
+        <div class="row g-4">
+
+            <div class="col-md-4">
+                <div class="card contact-card p-4 text-center h-100">
+                    <div class="icon-circle mb-3">
+                        <i class="bi bi-geo-alt"></i>
+                    </div>
+                    <h5>Address</h5>
+                    <p class="text-muted">
+                        No. 15 EduRing Street<br>
+                        Sokoto, Nigeria
+                    </p>
+                </div>
+            </div>
+
+            <div class="col-md-4">
+                <div class="card contact-card p-4 text-center h-100">
+                    <div class="icon-circle mb-3">
+                        <i class="bi bi-envelope"></i>
+                    </div>
+                    <h5>Email</h5>
+                    <p class="text-muted">
+                        shehukasimu4@gmail.com<br>
+                        support@example.com
+                    </p>
+                </div>
+            </div>
+
+            <div class="col-md-4">
+                <div class="card contact-card p-4 text-center h-100">
+                    <div class="icon-circle mb-3">
+                        <i class="bi bi-telephone"></i>
+                    </div>
+                    <h5>Phone</h5>
+                    <p class="text-muted">
+                        +234 811 459 8006<br>
+                        +234 913 799 3010
+                    </p>
+                </div>
+            </div>
+
+        </div>
+
+    </div>
+</section>
+
+<!-- Contact Form -->
+<section class="pb-5">
+    <div class="container">
+
+        <div class="row g-5">
+
+            <div class="col-lg-7">
+
+                <div class="form-section p-4">
+
+                    <h3 class="mb-4">Send Us a Message</h3>
+
+                    <form>
+
+                        <div class="row">
+
+                            <div class="col-md-6 mb-3">
+                                <label class="form-label">First Name</label>
+                                <input type="text" class="form-control">
+                            </div>
+
+                            <div class="col-md-6 mb-3">
+                                <label class="form-label">Last Name</label>
+                                <input type="text" class="form-control">
+                            </div>
+
+                        </div>
+
+                        <div class="mb-3">
+                            <label class="form-label">Email Address</label>
+                            <input type="email" class="form-control">
+                        </div>
+
+                        <div class="mb-3">
+                            <label class="form-label">Subject</label>
+                            <input type="text" class="form-control">
+                        </div>
+
+                        <div class="mb-3">
+                            <label class="form-label">Message</label>
+                            <textarea rows="6" class="form-control"></textarea>
+                        </div>
+
+                        <button class="btn btn-primary btn-lg">
+                            <i class="bi bi-send"></i>
+                            Send Message
+                        </button>
+
+                    </form>
+
+                </div>
+
+            </div>
+
+            <div class="col-lg-5">
+
+                <h3 class="mb-4 text-light">Our Location</h3>
+
+                <iframe
+                    src="https://maps.google.com/maps?q=sokoto&t=&z=13&ie=UTF8&iwloc=&output=embed"
+                    width="100%"
+                    height="450"
+                    loading="lazy">
+                </iframe>
+
+            </div>
+
+        </div>
+
+    </div>
+</section>
+
+{% endblock content %}

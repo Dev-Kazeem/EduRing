@@ -4,6 +4,8 @@ from django.db import transaction
 from django.db.models import Count
 from django.shortcuts import render, redirect, get_object_or_404
 from django.utils import timezone
+from django.core.paginator import Paginator
+
 
 from .forms import ExamForm, QuestionForm, ChoiceFormSet
 from .models import Exam, Question, ExamAttempt, StudentAnswer
@@ -216,14 +218,13 @@ def exam_start(request, exam_id):
     attempt = ExamAttempt.objects.create(student=request.user, exam=exam, attempt_number=attempt_number)
     return redirect('exams:take_exam', attempt_id=attempt.id)
 
-
 @student_required
 def take_exam(request, attempt_id):
     attempt = get_object_or_404(ExamAttempt, id=attempt_id, student=request.user)
 
     if attempt.status != ExamAttempt.Status.IN_PROGRESS:
         return redirect('exams:result_detail', attempt_id=attempt.id)
-
+    
     if attempt.is_time_expired:
         attempt.grade()
         messages.warning(request, "Time was up, so your exam was automatically submitted.")

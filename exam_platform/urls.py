@@ -13,7 +13,7 @@ urlpatterns = [
     path('accounts/', include('accounts.urls')),
     path('exams/', include('exams.urls')),
     path('', views.Home, name="home"),
-  #  path('', RedirectView.as_view(pattern_name='accounts:dashboard', permanent=False)),
+    path('contact', views.contact_view, name='contact'),
 ]
  
 if settings.DEBUG:
